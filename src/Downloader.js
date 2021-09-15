@@ -17,7 +17,7 @@ class Downloader {
         let download_url = url + `?api_key=${this.api_key}`;
 
         if (!fs.existsSync(this.storage_path)) {
-            fs.mkdirSync(this.storage_path);
+            fs.mkdirSync(this.storage_path, { recursive: true });
         }
 
         let file_des = path.join(this.storage_path, file_name);

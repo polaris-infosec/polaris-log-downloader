@@ -1,6 +1,6 @@
 const Downloader = require('./Downloader');
 const logger = require('./Logger');
-const {sleep} = require('./utils');
+const { sleep } = require('./utils');
 const path = require('path');
 const fs = require('fs');
 const CACHE_FILE_PATH = path.resolve(__dirname, '../cache/latest_index');
@@ -79,7 +79,24 @@ class LogIndex {
         return latest_index;
     }
 
+    async isExists(path) {
+        try {
+            await fs.access(path);
+            return true;
+        } catch {
+            return false;
+        }
+    };
+
+
     async saveLatestIndexLog(index) {
+        const dirname = path.dirname(CACHE_FILE_PATH);
+        console.log('-----',dirname);
+        const exist = await this.isExists(dirname);
+        if (!exist) {
+            await fs.mkdirSync(dirname, { recursive: true });
+        }
+
         fs.writeFileSync(CACHE_FILE_PATH, index);
     }
 
